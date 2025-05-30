@@ -86,7 +86,7 @@ declare
   begin
     select id, organisation_id into v_employee_id, v_organisation_id from public.employee where user_id = (event ->> 'user_id')::uuid;
 
-    return jsonb_build_object('claims', event -> 'claims' || jsonb_build_object('app_metadata', jsonb_build_object('organisation_id', v_organisation_id, 'employee_id', v_employee_id)));
+    return jsonb_set(event, array['claims', 'app_metadata'], event -> 'claims' -> 'app_metadata' || jsonb_build_object('organisation_id', v_organisation_id, 'employee_id', v_employee_id));
   end
 $$;
 
