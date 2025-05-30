@@ -34,13 +34,72 @@ export type Database = {
   };
   public: {
     Tables: {
-      [_ in never]: never;
+      employee: {
+        Row: {
+          email: string;
+          id: string;
+          organisation_id: string;
+          user_id: string | null;
+          username: string;
+        };
+        Insert: {
+          email: string;
+          id?: string;
+          organisation_id?: string;
+          user_id?: string | null;
+          username: string;
+        };
+        Update: {
+          email?: string;
+          id?: string;
+          organisation_id?: string;
+          user_id?: string | null;
+          username?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "employee_organisation_id_fkey";
+            columns: ["organisation_id"];
+            isOneToOne: false;
+            referencedRelation: "organisation";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      organisation: {
+        Row: {
+          id: string;
+          name: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      accept_employee_invite: {
+        Args: { employee_id: string };
+        Returns: {
+          email: string;
+          id: string;
+          organisation_id: string;
+          user_id: string | null;
+          username: string;
+        };
+      };
+      custom_access_token_hook: {
+        Args: { event: Json };
+        Returns: Json;
+      };
     };
     Enums: {
       [_ in never]: never;

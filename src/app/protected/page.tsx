@@ -16,6 +16,16 @@ export default async function ProtectedPage() {
       <p>
         Hello <span>{data.user.email}</span>
       </p>
+      <p>
+        Employee:{" "}
+        <span>{data.user.app_metadata.employee_id || "No Employee"}</span>
+      </p>
+      <p>
+        Organisation:{" "}
+        <span>
+          {data.user.app_metadata.organisation_id || "No Organisation"}
+        </span>
+      </p>
       <LogoutButton />
     </div>
   );
