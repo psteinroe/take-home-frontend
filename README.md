@@ -25,6 +25,6 @@ Our goal today is to allow a user to accept an invite to an organisation after s
 ## Hints
 
 - Check out the migration file to understand the data model. Do not worry, it is very simple.
-- We employ a Supabase Auth Hook to add the `organisation_id` and the `employee_id` to the `app_metadata` of the JWT if the user is connected. That data is available on the `User`.
+- We employ a Supabase Auth Hook to add the `organisation_id` and the `employee_id` to the `app_metadata` of the JWT if the user is connected. That data is available via `getClaims()`.
 - Shadcn + Tailwind is setup. Please use it! :)
 
