@@ -178,7 +178,7 @@ language plpgsql;
 do $$
 begin
     perform tests.create_organisation('test.com');
-    perform tests.create_user('invited', 'test.com');
+    perform tests.create_employee('admin', 'test.com');
 end
 $$;
 
