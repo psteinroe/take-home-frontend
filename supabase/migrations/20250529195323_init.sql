@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "public"."organisation" (
 
 
 CREATE TABLE IF NOT EXISTS "public"."employee" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "gen_random_uuid"(),
     "organisation_id" "uuid" NOT NULL references organisation on update restrict on delete cascade default private.organisation_id(),
     "user_id" "uuid",
     "username" "text" NOT NULL,
@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS "public"."employee" (
 );
 
 CREATE OR REPLACE FUNCTION "public"."accept_employee_invite"("employee_id" "uuid") RETURNS "public"."employee"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    SET "search_path" TO ''
-    AS $$
+LANGUAGE "plpgsql" SECURITY DEFINER
+SET "search_path" TO ''
+AS $$
 declare
     v_employee public.employee;
 begin
@@ -49,6 +49,7 @@ begin
             id = employee_id
             and email is not null
             and email = auth.jwt () ->> 'email') then
+
     update
         public.employee
     set
@@ -57,6 +58,14 @@ begin
         id = employee_id
     returning
         * into v_employee;
+
+    update
+        public.employee_invite
+    set
+        accepted = true
+    where
+        email = v_employee.email;
+
     return v_employee;
 else
     raise exception 'Unauthorized';
